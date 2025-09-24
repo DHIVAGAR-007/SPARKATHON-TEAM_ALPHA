@@ -1,2 +1,124 @@
-# SPARKATHON-TEAM_ALPHA
-# SPARKATHON-TEAMALPHA new repo for the hackathon 📊 Department Report Management Portal  A simple web-based portal for managing department reports, built with:  Frontend: HTML, CSS, JavaScript  Backend: Python (FastAPI) with REST APIs   This project allows different users (Admin, HOD, Faculty) to login, upload reports, and track report status.   ---  🚀 Features  🔐 User Authentication (Admin / HOD / Faculty)  📂 Report Upload (PDF/DOC/MD)  📑 Dashboard with statistics  ✅ Track report status (Approved / Pending / Submitted)  🌐 API communication between frontend & backend    ---  🖥 Tech Stack  Frontend: HTML, CSS, JavaScript (Fetch API)  Backend: Python FastAPI  Server: Uvicorn (runs the backend API)    ---  📂 Project Structure  report-portal/ │── frontend/ │   └── index.html   # Main portal UI (HTML + CSS + JS) │ │── backend/ │   └── main.py      # FastAPI backend with APIs │ │── README.md        # Documentation (this file)   ---  🔧 Setup & Installation  ⿢ Install Backend Dependencies  pip install fastapi uvicorn python-multipart  ⿣ Run Backend Server  cd backend uvicorn main:app --reload  Backend will run  ⿤ Open Frontend  Open frontend/index.html in your browser.  Login with sample users (admin, hod1, faculty1).    ---  🔗 API Endpoints  Login  POST /login Form Data: username, password Response: { success: True, role: "Faculty" }  Get Reports  GET /reports Response: { "reports": [...] }  Upload Report  POST /upload-report Form Data: dept, title, file   ---  📸 Screenshots  🔐 Login Page  (Insert screenshot here)  📊 Dashboard  (Insert screenshot here)   ---  ✨ Future Improvements  🔑 Replace in-memory storage with a database (SQLite/MySQL).  🔐 Add JWT authentication for security.  ☁ Store files in cloud (AWS S3 / Google Drive).  🔍 Search, filter, and sort reports.
+# SPARKATHON-TEAMALPHA
+new repo for the hackathon
+📊 Department Report Management Portal
+
+A simple web-based portal for managing department reports, built with:
+
+Frontend: HTML, CSS, JavaScript
+
+Backend: Python (FastAPI) with REST APIs
+
+
+This project allows different users (Admin, HOD, Faculty) to login, upload reports, and track report status.
+
+
+---
+
+🚀 Features
+
+🔐 User Authentication (Admin / HOD / Faculty)
+
+📂 Report Upload (PDF/DOC/MD)
+
+📑 Dashboard with statistics
+
+✅ Track report status (Approved / Pending / Submitted)
+
+🌐 API communication between frontend & backend
+
+
+
+---
+
+🖥 Tech Stack
+
+Frontend: HTML, CSS, JavaScript (Fetch API)
+
+Backend: Python FastAPI
+
+Server: Uvicorn (runs the backend API)
+
+
+
+---
+
+📂 Project Structure
+
+report-portal/
+│── frontend/
+│   └── index.html   # Main portal UI (HTML + CSS + JS)
+│
+│── backend/
+│   └── main.py      # FastAPI backend with APIs
+│
+│── README.md        # Documentation (this file)
+
+
+---
+
+🔧 Setup & Installation
+
+⿢ Install Backend Dependencies
+
+pip install fastapi uvicorn python-multipart
+
+⿣ Run Backend Server
+
+cd backend
+uvicorn main:app --reload
+
+Backend will run
+
+⿤ Open Frontend
+
+Open frontend/index.html in your browser.
+
+Login with sample users (admin, hod1, faculty1).
+
+
+
+---
+
+🔗 API Endpoints
+
+Login
+
+POST /login
+Form Data: username, password
+Response: { success: True, role: "Faculty" }
+
+Get Reports
+
+GET /reports
+Response: { "reports": [...] }
+
+Upload Report
+
+POST /upload-report
+Form Data: dept, title, file
+
+
+---
+
+📸 Screenshots
+
+🔐 Login Page
+
+(Insert screenshot here)
+
+📊 Dashboard
+
+(Insert screenshot here)
+
+
+---
+
+✨ Future Improvements
+
+🔑 Replace in-memory storage with a database (SQLite/MySQL).
+
+🔐 Add JWT authentication for security.
+
+☁ Store files in cloud (AWS S3 / Google Drive).
+
+🔍 Search, filter, and sort reports.

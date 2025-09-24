@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GS105 - Annual Report Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .auth-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00b894, #00a085);
+        }
+
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .features-section, .reports-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .features-section h3, .reports-section h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8f9ff, #e8ecff);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h4 {
+            color: #333;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .upload-section {
+            background: linear-gradient(135deg, #e8f5e8, #f0fff0);
+            border: 2px dashed #00b894;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            background: linear-gradient(135deg, #f0fff0, #e8f5e8);
+            border-color: #00a085;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: #00b894;
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .reports-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reports-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .reports-table tr:hover {
+            background: #f8f9ff;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-submitted {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .user-info {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .user-info h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .login-form {
+                flex-direction: column;
+            }
+            
+            .actions-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>GS105 Annual Report Portal</h1>
+        <p>Institute Annual Report Management System</p>
+    </div>
+
+    <div class="container">
+        <!-- Login Section -->
+        <div id="authSection" class="auth-section">
+            <h3>Login to Access Portal</h3>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+                <div class="form-group">
+                    <label for="userType">Role</label>
+                    <select id="userType">
+                        <option value="">Select Role</option>
+                        <option value="admin">Administrator</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="department">Department Head</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="login()">Login</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="dashboard">
+            <div class="user-info">
+                <h4 id="welcomeMessage">Welcome, User!</h4>
+                <p id="userRole">Role: Not specified</p>
+                <button class="btn btn-secondary" onclick="logout()" style="float: right;">Logout</button>
+            </div>
+
+            <!-- Stats Dashboard -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalReports">12</div>
+                    <div class="stat-label">Total Reports</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingReports">5</div>
+                    <div class="stat-label">Pending Reports</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedReports">7</div>
+                    <div class="stat-label">Completed Reports</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDepartments">8</div>
+                    <div class="stat-label">Departments</div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <h3>Portal Features</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>📊 Department Management</h4>
+                        <p>Departments can upload and manage their yearly reports with ease. Track submission status and get notifications.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📈 Centralized Dashboard</h4>
+                        <p>Visualize all reports in one place with interactive charts and comprehensive analytics.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>👥 Role-based Access</h4>
+                        <p>Secure login system with different access levels for admin, faculty, and department users.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📄 Export Options</h4>
+                        <p>Generate and export consolidated reports in multiple formats including Markdown and PDF.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Section (Department/Faculty) -->
+            <div id="uploadSection" class="upload-section" style="display: none;">
+                <div class="upload-icon">📁</div>
+                <h3>Upload Annual Report</h3>
+                <p>Click to upload your department's annual report or drag and drop files here</p>
+                <input type="file" id="reportFile" class="file-input" accept=".pdf,.doc,.docx,.md" multiple>
+                <button class="btn btn-success" onclick="document.getElementById('reportFile').click()">
+                    Choose Files
+                </button>
+                <div id="fileList" style="margin-top: 1rem;"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="actions-bar">
+                <button class="btn" onclick="showModal('reportModal')">View All Reports</button>
+                <button class="btn btn-secondary" onclick="generateReport()">Generate Consolidated Report</button>
+                <button class="btn btn-success" onclick="exportToPDF()">Export to PDF</button>
+                <button class="btn" onclick="showModal('statsModal')">Detailed Analytics</button>
+            </div>
+
+            <!-- Reports Section -->
+            <div class="reports-section">
+                <h3>Recent Reports</h3>
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Report Title</th>
+                            <th>Submission Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTableBody">
+                        <tr>
+                            <td>Computer Science</td>
+                            <td>Annual Report 2024</td>
+                            <td>2024-12-15</td>
+                            <td><span class="status-badge status-approved">Approved</span></td>
+                            <td><button class="btn" style="padding: 0.3rem 1rem; font-size: 0.9rem;">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Mathematics</td>
+                            <td>Department Report 2024</td>
+                            <td>2024-12-10</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td><button class="btn" style="padding: 0.3rem 1rem; font-size: 0.9rem;">Review</button></td>
+                        </tr>
+                        <tr>
+                            <td>Physics</td>
+                            <td>Research Summary 2024</td>
+                            <td>2024-12-08</td>
+                            <td><span class="status-badge status-submitted">Submitted</span></td>
+                            <td><button class="btn" style="padding: 0.3rem 1rem; font-size: 0.9rem;">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('reportModal')">&times;</span>
+            <h3>All Reports</h3>
+            <div id="allReportsContent">
+                <p>Loading reports...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('statsModal')">&times;</span>
+            <h3>Detailed Analytics</h3>
+            <div id="analyticsContent">
+                <canvas id="analyticsChart" width="400" height="200"></canvas>
+                <div style="margin-top: 2rem;">
+                    <h4>Key Insights:</h4>
+                    <ul style="margin-top: 1rem; line-height: 2;">
+                        <li>60% of reports submitted on time</li>
+                        <li>Computer Science dept leads in submissions</li>
+                        <li>Average report length: 25 pages</li>
+                        <li>Most common submission format: PDF (85%)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let reports = [
+            { id: 1, dept: 'Computer Science', title: 'Annual Report 2024', date: '2024-12-15', status: 'approved' },
+            { id: 2, dept: 'FULLSTACK', title: 'Department Report 2024', date: '2024-12-10', status: 'pending' },
+            { id: 3, dept: 'DSA', title: 'Research Summary 2024', date: '2024-12-08', status: 'submitted' },
+            { id: 4, dept: 'JAVA', title: 'Academic Year Report', date: '2024-12-05', status: 'approved' },
+            { id: 5, dept: 'PYTHON', title: 'Research Activities 2024', date: '2024-12-03', status: 'pending' }
+        ];
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+
+            if (!username || !password || !userType) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Simple validation (in real app, this would be server-side)
+            if (password.length < 3) {
+                alert('Invalid credentials');
+                return;
+            }
+
+            currentUser = {
+                username: username,
+                role: userType
+            };
+
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${username}!`;
+            document.getElementById('userRole').textContent = `Role: ${userType.charAt(0).toUpperCase() + userType.slice(1)}`;
+
+            // Show upload section for department and faculty users
+            if (userType === 'department' || userType === 'faculty') {
+                document.getElementById('uploadSection').style.display = 'block';
+            }
+
+            updateDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('userType').value = '';
+            document.getElementById('uploadSection').style.display = 'none';
+        }
+
+        function updateDashboard() {
+            // Update stats
+            document.getElementById('totalReports').textContent = reports.length;
+            document.getElementById('pendingReports').textContent = reports.filter(r => r.status === 'pending').length;
+            document.getElementById('completedReports').textContent = reports.filter(r => r.status === 'approved').length;
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            
+            if (modalId === 'reportModal') {
+                loadAllReports();
+            } else if (modalId === 'statsModal') {
+                drawAnalyticsChart();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function loadAllReports() {
+            const content = document.getElementById('allReportsContent');
+            let html = '<div style="max-height: 400px; overflow-y: auto;">';
+            
+            reports.forEach(report => {
+                html += `
+                    <div style="border: 1px solid #e1e5e9; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                        <h4>${report.title}</h4>
+                        <p><strong>Department:</strong> ${report.dept}</p>
+                        <p><strong>Date:</strong> ${report.date}</p>
+                        <p><strong>Status:</strong> <span class="status-badge status-${report.status}">${report.status.charAt(0).toUpperCase() + report.status.slice(1)}</span></p>
+                        <button class="btn" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">Download</button>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+
+        function drawAnalyticsChart() {
+            const canvas = document.getElementById('analyticsChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Simple bar chart
+            const statusCounts = {
+                'approved': reports.filter(r => r.status === 'approved').length,
+                'pending': reports.filter(r => r.status === 'pending').length,
+                'submitted': reports.filter(r => r.status === 'submitted').length
+            };
+            
+            const colors = ['#00b894', '#fdcb6e', '#74b9ff'];
+            const labels = ['Approved', 'Pending', 'Submitted'];
+            const values = Object.values(statusCounts);
+            const maxValue = Math.max(...values);
+            
+            const barWidth = 80;
+            const barSpacing = 40;
+            const startX = 50;
+            const startY = canvas.height - 50;
+            const chartHeight = 120;
+            
+            values.forEach((value, index) => {
+                const barHeight = (value / maxValue) * chartHeight;
+                const x = startX + index * (barWidth + barSpacing);
+                const y = startY - barHeight;
+                
+                // Draw bar
+                ctx.fillStyle = colors[index];
+                ctx.fillRect(x, y, barWidth, barHeight);
+                
+                // Draw label
+                ctx.fillStyle = '#333';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(labels[index], x + barWidth/2, startY + 20);
+                
+                // Draw value
+                ctx.fillText(value.toString(), x + barWidth/2, y - 10);
+            });
+            
+            // Draw title
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Report Status Distribution', canvas.width/2, 30);
+        }
+
+        function generateReport() {
+            alert('Generating consolidated report... This would normally compile all department reports into a single document.');
+        }
+
+        function exportToPDF() {
+            alert('Exporting to PDF... In a real application, this would generate a PDF file with all report data.');
+        }
+
+        // File upload handling
+        document.getElementById('reportFile').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const fileList = document.getElementById('fileList');
+            
+            if (files.length > 0) {
+                let html = '<h4>Selected Files:</h4><ul>';
+                for (let i = 0; i < files.length; i++) {
+                    html += `<li>${files[i].name} (${(files[i].size / 1024 / 1024).toFixed(2)} MB)</li>`;
+                }
+                html += '</ul><button class="btn btn-success" onclick="uploadFiles()">Upload Selected Files</button>';
+                fileList.innerHTML = html;
+            }
+        });
+
+        function uploadFiles() {
+            // Simulate file upload
+            alert('Files uploaded successfully! Your report has been submitted for review.');
+            document.getElementById('fileList').innerHTML = '';
+            document.getElementById('reportFile').value = '';
+            
+            // Add new report to the list
+            const newReport = {
+                id: reports.length + 1,
+                dept: currentUser.username + ' Department',
+                title: 'New Annual Report 2024',
+                date: new Date().toISOString().split('T')[0],
+                status: 'submitted'
+            };
+            reports.push(newReport);
+            updateDashboard();
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize dashboard stats on page load
+        updateDashboard();
+    </script>
+</body>
+</html>
